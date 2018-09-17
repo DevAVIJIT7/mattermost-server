@@ -6,12 +6,16 @@ package testutils
 import (
 	"net/http"
 	"net/http/httptest"
+	"time"
 
 	"github.com/mattermost/mattermost-server/services/httpservice"
 )
 
 type MockedHTTPService struct {
 	Server *httptest.Server
+
+	OverrideTimeout bool
+	Timeout         time.Duration
 }
 
 func MakeMockedHTTPService(handler http.Handler) *MockedHTTPService {
@@ -21,7 +25,15 @@ func MakeMockedHTTPService(handler http.Handler) *MockedHTTPService {
 }
 
 func (h *MockedHTTPService) MakeClient(trustURLs bool) *httpservice.Client {
-	return &httpservice.Client{Client: h.Server.Client()}
+	client := &httpservice.Client{
+		Client: h.Server.Client(),
+	}
+
+	if h.OverrideTimeout {
+		client.Timeout = h.Timeout
+	}
+
+	return client
 }
 
 func (h *MockedHTTPService) Close() {
