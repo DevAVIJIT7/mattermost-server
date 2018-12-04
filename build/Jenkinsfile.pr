@@ -60,7 +60,7 @@ pipeline {
                     }
                 }
                 dir('src/github.com/mattermost/mattermost-webapp') {
-                    withDockerContainer(args: '', image: 'mattermost/mattermost-build-webapp:v5.2.0') {
+                    withDockerContainer(args: '', image: 'mattermost/mattermost-build-webapp:oct-2-2018') {
                         ansiColor('xterm') {
                             sh """
                                 #!/bin/bash -ex
