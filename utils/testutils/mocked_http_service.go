@@ -32,6 +32,10 @@ func (h *MockedHTTPService) MakeClient(trustURLs bool) *http.Client {
 	return client
 }
 
+func (h *MockedHTTPService) MakeTransport(trustURLs bool) http.RoundTripper {
+	return http.DefaultTransport
+}
+
 func (h *MockedHTTPService) Close() {
 	h.Server.CloseClientConnections()
 	h.Server.Close()
