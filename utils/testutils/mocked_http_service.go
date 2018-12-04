@@ -7,8 +7,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"time"
-
-	"github.com/mattermost/mattermost-server/services/httpservice"
 )
 
 type MockedHTTPService struct {
@@ -24,10 +22,8 @@ func MakeMockedHTTPService(handler http.Handler) *MockedHTTPService {
 	}
 }
 
-func (h *MockedHTTPService) MakeClient(trustURLs bool) *httpservice.Client {
-	client := &httpservice.Client{
-		Client: h.Server.Client(),
-	}
+func (h *MockedHTTPService) MakeClient(trustURLs bool) *http.Client {
+	client := h.Server.Client()
 
 	if h.OverrideTimeout {
 		client.Timeout = h.Timeout
